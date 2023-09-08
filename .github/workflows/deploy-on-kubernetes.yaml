@@ -31,6 +31,12 @@ on:
           'Version to manually release'
         required: true
         type: string
+      apply-or-delete:
+        description: |
+          'Apply or Delete'
+        required: true
+        type: string
+        default: apply
       infrastructure-only:
         description: |
           'Deploy infractructure'
@@ -39,7 +45,7 @@ on:
         default: false
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.sha }}
+  group: ${{ github.workflow }}-${{ github.head_ref || github.sha }}-deploy
   cancel-in-progress: true
 
 jobs:
