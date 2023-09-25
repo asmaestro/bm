@@ -197,3 +197,13 @@ jobs:
               - ${{ env.REGISTRY }}/${{ github.repository }}-passenger:${{ inputs.release_tag }}
               - ${{ env.REGISTRY }}/${{ github.repository }}-booking:${{ inputs.release_tag }}
           token: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy-staging:
+    if: success()
+    needs: [flight-docker, identity-docker, passenger-docker, booking-docker]
+    uses: ./.github/workflows/deploy-on-kubernetes.yaml
+    with:
+      release_tag: ${{ inputs.release_tag }}
+      infrastructure-only: false
+      apply-or-delete: apply
+    secrets: inherit
