@@ -1,0 +1,89 @@
+---
+name: Docker Image Validation
+
+on:
+  pull_request:
+    paths:
+      - 'src/**'
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  packages: write  # required to publish to packages
+  pull-requests: write
+
+env:
+  TAG_RULES: |
+    type=ref,event=pr,priority=200
+    type=raw,value=gha-${{ github.sha }},enable=${{github.event_name == 'pull_request'}},priority=100
+
+jobs:
+  vars:
+    runs-on: ubuntu-latest
+    outputs:
+      tag_rules: ${{ env.TAG_RULES }}
+    steps:
+      - run: echo "Exposing env vars"
+
+  flight-docker:
+    permissions:
+      contents: read
+      packages: write # needed to push docker image to ghcr.io
+      pull-requests: write
+    uses: asmaestro/actions/.github/workflows/docker-build-push.yaml@solution-docker
+    needs: [vars]
+    with:
+      name: Flight
+      push: true
+      file: 'src/Services/Flight/Dockerfile'
+      context: .
+      image-names: "ghcr.io/${{ github.repository }}-flight"
+      tag-rules: ${{ needs.vars.outputs.tag_rules }}
+  
+  identity-docker:
+    permissions:
+      contents: read
+      packages: write # needed to push docker image to ghcr.io
+      pull-requests: write
+    uses: asmaestro/actions/.github/workflows/docker-build-push.yaml@solution-docker
+    needs: [vars]
+    with:
+      name: Identity
+      push: true
+      file: 'src/Services/Identity/Dockerfile'
+      context: .
+      image-names: "ghcr.io/${{ github.repository }}-identity"
+      tag-rules: ${{ needs.vars.outputs.tag_rules }}
+
+  passenger-docker:
+    permissions:
+      contents: read
+      packages: write # needed to push docker image to ghcr.io
+      pull-requests: write
+    uses: asmaestro/actions/.github/workflows/docker-build-push.yaml@solution-docker
+    needs: [vars]
+    with:
+      name: Passenger
+      push: true
+      file: 'src/Services/Passenger/Dockerfile'
+      context: .
+      image-names: "ghcr.io/${{ github.repository }}-passenger"
+      tag-rules: ${{ needs.vars.outputs.tag_rules }}
+
+  booking-docker:
+    permissions:
+      contents: read
+      packages: write # needed to push docker image to ghcr.io
+      pull-requests: write
+    uses: asmaestro/actions/.github/workflows/docker-build-push.yaml@solution-docker
+    needs: [vars]
+    with:
+      name: Booking
+      push: true
+      file: 'src/Services/Booking/Dockerfile'
+      context: .
+      image-names: "ghcr.io/${{ github.repository }}-booking"
+      tag-rules: ${{ needs.vars.outputs.tag_rules }}
