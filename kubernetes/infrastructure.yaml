@@ -276,7 +276,8 @@ spec:
           ports:
             - containerPort: 5672
             - containerPort: 15672
-            - containerPort: 15692
+            - name: prometheus
+              containerPort: 15692
           resources:
             requests:
               memory: 64Mi
@@ -299,9 +300,9 @@ spec:
     - name: "15672"
       port: 15672
       targetPort: 15672
-    - name: "prometheus"
+    - name: prometheus
       port: 15692
-      targetPort: 15692
+      targetPort: prometheus
   selector:
     app: rabbitmq
 ---
