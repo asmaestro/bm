@@ -8,5 +8,5 @@ This repository is a modified fork of [https://github.com/meysamhadeli/booking-m
 
 ## Docker Image Tags
 k8smaestro/bm-{microservice}
-1.0.0 - base
-1.0.1 - increased request rate limit to 5000 per minute
+- 1.0.0 - base
+- 1.0.1 - increased request rate limit to 5000 per minute
