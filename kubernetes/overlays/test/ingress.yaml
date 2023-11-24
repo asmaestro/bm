@@ -1,0 +1,84 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.allow-http: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+  name: booking-microservies
+spec:
+  ingressClassName: nginx
+  rules:
+  # change IP address to yours!
+  - host: scaling.34.118.91.110.nip.io
+    http:
+      paths:
+      - backend:
+          service:
+            name: frontend
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+      - backend:
+          service:
+            name: frontend
+            port:
+              number: 80
+        path: /(.*)
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: identity
+            port:
+              number: 80
+        path: /identity
+        pathType: Prefix
+      - backend:
+          service:
+            name: identity
+            port:
+              number: 80
+        path: /identity/(.*)
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: flight
+            port:
+              number: 80
+        path: /flight
+        pathType: Prefix
+      - backend:
+          service:
+            name: flight
+            port:
+              number: 80
+        path: /flight/(.*)
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: passenger
+            port:
+              number: 80
+        path: /passenger
+        pathType: Prefix
+      - backend:
+          service:
+            name: passenger
+            port:
+              number: 80
+        path: /passenger/(.*)
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: booking
+            port:
+              number: 80
+        path: /booking
+        pathType: Prefix
+      - backend:
+          service:
+            name: booking
+            port:
+              number: 80
+        path: /booking/(.*)
+        pathType: ImplementationSpecific

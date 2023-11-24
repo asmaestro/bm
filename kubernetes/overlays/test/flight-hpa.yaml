@@ -1,0 +1,28 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: flight-hpa
+  labels:
+    app.kubernetes.io/name: flight
+    app.kubernetes.io/part-of: booking-microservices
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: flight-deployment
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 60 # default 300, if not specified
+      policies: # allows scaling down 100% of Pods per 30 seconds
+      - type: Percent
+        value: 100 # default 100, if not specified
+        periodSeconds: 30 # default 15, if not specified

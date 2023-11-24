@@ -1,7 +1,7 @@
 
 ## uncommnet this line for use kubernetes ingress controller instead of Yarp
-//@api-gateway=https://booking-microservices.com  
-@api-gateway=https://localhost:5000  
+@api-gateway=http://scaling.34.118.91.110.nip.io
+//@api-gateway=https://localhost:5000  
 @identity-api=http://localhost:6005
 @flight-api=http://localhost:5004
 @passenger-api=http://localhost:6012

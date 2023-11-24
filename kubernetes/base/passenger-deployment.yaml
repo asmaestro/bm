@@ -19,7 +19,7 @@ spec:
       imagePullSecrets:
         - name: github
       containers:
-        - image: k8smaestro/bm-passenger:1.0.0
+        - image: k8smaestro/bm-passenger:1.0.1
           name: passenger
           ports:
             - containerPort: 8080
@@ -29,8 +29,8 @@ spec:
             value: docker
           resources:
             requests:
-              memory: 64Mi
-              cpu: 64m
+              memory: 200Mi
+              cpu: 100m
             limits:
               memory: 512Mi
-              cpu: 256m
+              cpu: 300m
